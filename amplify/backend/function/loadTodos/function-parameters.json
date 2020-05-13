@@ -1,0 +1,12 @@
+{
+    "permissions": {
+        "api": {
+            "pagination": [
+                "create",
+                "read",
+                "update",
+                "delete"
+            ]
+        }
+    }
+}

@@ -1,0 +1,23 @@
+type Todo
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      {
+        allow: private
+        provider: iam
+        operations: [read, create, update, delete]
+      }
+    ]
+  )
+  @key(
+    fields: ["owner", "dueOn"]
+    name: "ByDate"
+    queryField: "listTodosByDate"
+  ) {
+  id: ID!
+  name: String!
+  description: String
+  owner: String!
+  dueOn: AWSDateTime!
+}
