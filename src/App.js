@@ -269,26 +269,28 @@ function TokenConsole({ limit, nextToken, nextNextToken, previousTokens }) {
           </li>
         </ul>
       </div>
-      <div className="my-3 pt-2 pb-4 border-b border-gray-400 overflow-x-auto whitespace-no-wrap">
+      <div className="my-3 pt-2 pb-4 border-b border-gray-400">
         <div>
           Previous Tokens (pop the last token and assign it to{' '}
           <span className="font-semibold">nextToken</span> when user clicks{' '}
           <span className="font-semibold">Previous</span>):
         </div>
-        <ol className="list-decimal list-inside">
-          {previousTokens.map((token, i) => (
-            <li key={token || 'undefined'}>
-              {token ? (
-                <HighlightedToken
-                  previous={previousTokens[i - 1]}
-                  current={token}
-                />
-              ) : (
-                <span className="italic">undefined</span>
-              )}
-            </li>
-          ))}
-        </ol>
+        <div className="overflow-x-auto whitespace-no-wrap">
+          <ol className="list-decimal list-inside">
+            {previousTokens.map((token, i) => (
+              <li key={token || 'undefined'}>
+                {token ? (
+                  <HighlightedToken
+                    previous={previousTokens[i - 1]}
+                    current={token}
+                  />
+                ) : (
+                  <span className="italic">undefined</span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     </div>
   )
