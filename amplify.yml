@@ -1,7 +1,7 @@
 version: 0.1
 backend:
   phases:
-    prebuild:
+    preBuild:
       commands:
         - npm i @babel/cli @babel/core @babel/preset-env
     build:
