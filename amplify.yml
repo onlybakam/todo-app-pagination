@@ -3,7 +3,7 @@ backend:
   phases:
     preBuild:
       commands:
-        - npm i @babel/cli @babel/core @babel/preset-env
+        - yarn add -D @babel/cli @babel/core @babel/preset-env
     build:
       commands:
         - '# Execute Amplify CLI with the helper script'

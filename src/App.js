@@ -241,41 +241,45 @@ function TokenConsole({ limit, nextToken, nextNextToken, previousTokens }) {
           limit: {limit} (number of items to fetch per query; a.k.a page size)
         </div>
       </div>
-      <div className="my-3 pt-2 pb-4 border-b border-gray-400 overflow-x-auto whitespace-no-wrap">
+      <div className="my-3 py-2 border-b border-gray-400">
         <div>nextToken (used in the last query):</div>
-        <ul className="list-disc list-inside">
-          <li>
-            {nextToken ? (
-              <HighlightedToken current={nextToken} />
-            ) : (
-              <span className="italic">undefined</span>
-            )}
-          </li>
-        </ul>
+        <div className="overflow-x-auto whitespace-no-wrap pt-2 pb-4">
+          <ul className="list-disc list-inside">
+            <li>
+              {nextToken ? (
+                <HighlightedToken current={nextToken} />
+              ) : (
+                <span className="italic">undefined</span>
+              )}
+            </li>
+          </ul>
+        </div>
       </div>
-      <div className="my-3 pt-2 pb-4 border-b border-gray-400 overflow-x-auto whitespace-no-wrap">
+      <div className="my-3 pt-2 pb-2 border-b border-gray-400">
         <div>
           Next nextToken (assign to{' '}
           <span className="font-semibold">nextToken</span> when user clicks{' '}
           <span className="font-semibold">Next</span>):
         </div>
-        <ul className="list-disc list-inside">
-          <li>
-            {nextNextToken ? (
-              <HighlightedToken current={nextNextToken} />
-            ) : (
-              <span className="italic">undefined</span>
-            )}
-          </li>
-        </ul>
+        <div className="overflow-x-auto whitespace-no-wrap pt-2 pb-4">
+          <ul className="list-disc list-inside">
+            <li>
+              {nextNextToken ? (
+                <HighlightedToken current={nextNextToken} />
+              ) : (
+                <span className="italic">undefined</span>
+              )}
+            </li>
+          </ul>
+        </div>
       </div>
-      <div className="my-3 pt-2 pb-4 border-b border-gray-400">
+      <div className="my-3 pt-2 pb-2 border-b border-gray-400">
         <div>
           Previous Tokens (pop the last token and assign it to{' '}
           <span className="font-semibold">nextToken</span> when user clicks{' '}
           <span className="font-semibold">Previous</span>):
         </div>
-        <div className="overflow-x-auto whitespace-no-wrap">
+        <div className="overflow-x-auto whitespace-no-wrap pt-2 pb-4">
           <ol className="list-decimal list-inside">
             {previousTokens.map((token, i) => (
               <li key={token || 'undefined'}>
