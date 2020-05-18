@@ -154,7 +154,7 @@ function TodoInput({ todo, setTodo, submit }) {
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
               <span className="text-sm">
-                Form and mutations are disabled in preview. visit{' '}
+                Form and mutations are disabled in preview. visit the{' '}
                 <a
                   rel="noreferrer noopener"
                   className="font-mono text-orange-500 hover:text-orange-800"
@@ -162,7 +162,7 @@ function TodoInput({ todo, setTodo, submit }) {
                 >
                   repo
                 </a>{' '}
-                for more info
+                to learn how to deploy the app.
               </span>
             </div>
           </div>
