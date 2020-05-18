@@ -126,6 +126,7 @@ function Table({
 
 function TodoInput({ todo, setTodo, submit }) {
   const [open, setOpen] = useState(false)
+  const [off, setOff] = useState(true)
   const { name, owner, description } = todo
   const onChange = (change) => {
     setTodo((t) => ({ ...t, ...change }))
@@ -148,76 +149,94 @@ function TodoInput({ todo, setTodo, submit }) {
         </button>
       </div>
       <form className={`${open ? '' : 'hidden'} m-4`} onSubmit={submit}>
-        <div className="mb-6 md:flex md:items-center">
-          <div className="md:w-1/3">
-            <label
-              className="block pr-4 mb-1 font-bold text-gray-500 md:text-right md:mb-0"
-              htmlFor="owner"
-            >
-              Owner
-            </label>
+        <fieldset disabled={!!off}>
+          <div className="mb-6 md:flex md:items-center">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
+              <span className="text-sm">
+                Form and mutations are disabled in preview. visit{' '}
+                <a
+                  rel="noreferrer noopener"
+                  className="font-mono text-orange-500 hover:text-orange-800"
+                  href="https://github.com/onlybakam/todo-app-pagination"
+                >
+                  repo
+                </a>{' '}
+                for more info
+              </span>
+            </div>
           </div>
-          <div className="md:w-2/3">
-            <input
-              className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-orange-500"
-              name="owner"
-              value={owner}
-              onChange={(e) => onChange({ owner: e.target.value })}
-            />
+          <div className="mb-6 md:flex md:items-center">
+            <div className="md:w-1/3">
+              <label
+                className="block pr-4 mb-1 font-bold text-gray-500 md:text-right md:mb-0"
+                htmlFor="owner"
+              >
+                Owner
+              </label>
+            </div>
+            <div className="md:w-2/3">
+              <input
+                className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-orange-500"
+                name="owner"
+                value={owner}
+                onChange={(e) => onChange({ owner: e.target.value })}
+              />
+            </div>
           </div>
-        </div>
-        <div className="mb-6 md:flex md:items-center">
-          <div className="md:w-1/3">
-            <label
-              className="block pr-4 mb-1 font-bold text-gray-500 md:text-right md:mb-0"
-              htmlFor="name"
-            >
-              Name
-            </label>
+          <div className="mb-6 md:flex md:items-center">
+            <div className="md:w-1/3">
+              <label
+                className="block pr-4 mb-1 font-bold text-gray-500 md:text-right md:mb-0"
+                htmlFor="name"
+              >
+                Name
+              </label>
+            </div>
+            <div className="md:w-2/3">
+              <input
+                className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-orange-500"
+                name="name"
+                value={name}
+                onChange={(e) => onChange({ name: e.target.value })}
+              />
+            </div>
           </div>
-          <div className="md:w-2/3">
-            <input
-              className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-orange-500"
-              name="name"
-              value={name}
-              onChange={(e) => onChange({ name: e.target.value })}
-            />
+          <div className="mb-6 md:flex">
+            <div className="md:w-1/3">
+              <label
+                className="block pr-4 mb-1 font-bold text-gray-500 md:text-right md:mb-0"
+                htmlFor="description"
+              >
+                Description
+              </label>
+            </div>
+            <div className="md:w-2/3">
+              <textarea
+                className="w-full h-32 px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none md:h-20 focus:outline-none focus:bg-white focus:border-orange-500"
+                name="description"
+                value={description}
+                onChange={(e) => onChange({ description: e.target.value })}
+              />
+            </div>
           </div>
-        </div>
-        <div className="mb-6 md:flex">
-          <div className="md:w-1/3">
-            <label
-              className="block pr-4 mb-1 font-bold text-gray-500 md:text-right md:mb-0"
-              htmlFor="description"
-            >
-              Description
-            </label>
+          <div className="md:flex md:items-center">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
+              <button
+                disabled={disabled}
+                className={`${
+                  disabled
+                    ? 'bg-orange-500 opacity-50 cursor-not-allowed'
+                    : 'bg-orange-500 hover:bg-orange-400'
+                } shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded`}
+                type="submit"
+              >
+                Add
+              </button>
+            </div>
           </div>
-          <div className="md:w-2/3">
-            <textarea
-              className="w-full h-32 px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none md:h-20 focus:outline-none focus:bg-white focus:border-orange-500"
-              name="description"
-              value={description}
-              onChange={(e) => onChange({ description: e.target.value })}
-            />
-          </div>
-        </div>
-        <div className="md:flex md:items-center">
-          <div className="md:w-1/3"></div>
-          <div className="md:w-2/3">
-            <button
-              disabled={disabled}
-              className={`${
-                disabled
-                  ? 'bg-orange-500 opacity-50 cursor-not-allowed'
-                  : 'bg-orange-500 hover:bg-orange-400'
-              } shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded`}
-              type="submit"
-            >
-              Add
-            </button>
-          </div>
-        </div>
+        </fieldset>
       </form>
     </div>
   )
@@ -377,7 +396,7 @@ function Heading() {
           href="https://docs.amplify.aws/cli/graphql-transformer/directives#model"
           target="_blank"
           rel="noreferrer noopener"
-          className="font-mono text-orange-500"
+          className="font-mono text-orange-500 hover:text-orange-800"
         >
           @model
         </a>{' '}
@@ -408,7 +427,6 @@ function App() {
   useEffect(() => {
     const fetch = async () => {
       setIsLoading(true)
-      setIsError(false)
       try {
         const variables = {
           nextToken,
@@ -425,7 +443,6 @@ function App() {
         setTodos(result.data.listTodosByDate.items)
       } catch (err) {
         console.log(err)
-        setIsError(true)
       } finally {
         setIsLoading(false)
       }
@@ -448,6 +465,7 @@ function App() {
       setTodo({ ...TODO_DEFAULT })
     } catch (err) {
       console.log(err)
+      setIsError(true)
     }
   }
 

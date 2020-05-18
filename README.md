@@ -44,7 +44,7 @@ yarn start
 
 ## Pre-populate the app (optional)
 
-Run the "todoLoader" Lambda function to pre-populate some todos
+Run the "loadTodos" Lambda function to pre-populate 250 todos across 3 default users.
 
 1. open the amplify console
 ```sh
@@ -54,3 +54,4 @@ amplify console # opens the amplify console in your browser
 2. click "View in Lambda" to open up your function in the Lambda console.
 3. Create a new test event using the "hello-world" template. The content of the event is not important.
 4. Click "Test"
+  
