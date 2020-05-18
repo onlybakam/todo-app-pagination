@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react'
 
 import moment from 'moment'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import {
+  ChevronDown,
+  ChevronUp,
+  ChevronsLeft,
+  ChevronsRight,
+  PenTool,
+  X,
+} from 'react-feather'
 
 import Amplify from '@aws-amplify/core'
 import { API, graphqlOperation } from '@aws-amplify/api'
@@ -28,8 +35,8 @@ function Table({
 }) {
   const isSortingUp = sortDirection === SORT.ASC
   return (
-    <div className=" shadow-md rounded px-8 py-6">
-      <table className="table-auto w-full text-sm">
+    <div className="px-4 py-2 mb-4 rounded shadow-md lg:py-4 lg:px-8">
+      <table className="w-full text-sm table-auto">
         <thead>
           <tr className="border-b">
             <th className="py-2 text-left">
@@ -38,18 +45,18 @@ function Table({
                   <select
                     value={owner}
                     onChange={(e) => resetOwner(e.target.value)}
-                    className="w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-orange-500"
+                    className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-orange-500"
                   >
                     <option value="">Select a user</option>
                     <option value="admin">admin</option>
                     <option value="axel">axel</option>
                     <option value="bernice">bernice</option>
                   </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <div className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
                     <ChevronDown size={'1rem'} />
                   </div>
                 </div>
-                <div className="inline-flex ml-6 items-center whitespace-no-wrap sm:hidden">
+                <div className="inline-flex items-center ml-6 whitespace-no-wrap sm:hidden">
                   <span>Due On</span>
                   <button
                     onClick={toggleSortDirection}
@@ -64,7 +71,7 @@ function Table({
                 </div>
               </div>
             </th>
-            <th className="px-8 py-2 text-left hidden sm:table-cell">
+            <th className="hidden px-8 py-2 text-left sm:table-cell">
               <div className="flex items-center whitespace-no-wrap">
                 <span>Due On</span>
                 <button
@@ -79,44 +86,46 @@ function Table({
                 </button>
               </div>
             </th>
-            <th className="py-2 text-left hidden md:table-cell"></th>
           </tr>
         </thead>
-        <tbody>
-          {todos.map((todo, i) => (
-            <tr
-              key={todo.id}
-              className={`align-top ${i % 2 === 1 ? '' : 'bg-white'}`}
-            >
+        {todos.map((todo, i) => (
+          <tbody
+            key={todo.id}
+            className={`align-top ${i % 2 === 1 ? '' : 'bg-gray-100'}`}
+          >
+            <tr>
               <td className="p-2 text-left">
-                <span className="block text-xs uppercase font-semibold text-gray-500 whitespace-no-wrap">
+                <span className="block text-xs font-semibold text-gray-500 uppercase whitespace-no-wrap">
                   {todo.id}
                 </span>
-                <span className="sm:hidden text-xs uppercase font-semibold text-gray-500">
+                <span className="text-xs font-semibold text-gray-500 uppercase sm:hidden">
                   {moment(todo.dueOn).calendar()} -{' '}
                 </span>
                 <span>{todo.owner}</span>
               </td>
-              <td className="px-8 py-2 text-left hidden sm:table-cell">
-                <span className="text-xs uppercase font-semibold text-gray-500">
+              <td className="hidden px-8 py-2 text-left sm:table-cell">
+                <span className="text-xs font-semibold text-gray-500 uppercase">
                   {moment(todo.dueOn).calendar()}
                 </span>
               </td>
-              <td className="p-2 text-left hidden md:table-cell">
-                <span className="text-xs uppercase font-semibold text-gray-500">
+            </tr>
+            <tr>
+              <td colspan="2" className="hidden p-2 text-left md:table-cell">
+                <span className="text-xs font-semibold text-gray-500 uppercase">
                   {todo.name}
                 </span>
                 <span className="block">{todo.description}</span>
               </td>
             </tr>
-          ))}
-        </tbody>
+          </tbody>
+        ))}
       </table>
     </div>
   )
 }
 
 function TodoInput({ todo, setTodo, submit }) {
+  const [open, setOpen] = useState(false)
   const { name, owner, description } = todo
   const onChange = (change) => {
     setTodo((t) => ({ ...t, ...change }))
@@ -124,81 +133,93 @@ function TodoInput({ todo, setTodo, submit }) {
 
   const disabled = !name || !description
   return (
-    <form
-      className="hidden bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      onSubmit={submit}
-    >
-      <div className="md:flex md:items-center mb-6">
-        <div className="md:w-1/3">
-          <label
-            className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-            htmlFor="owner"
-          >
-            Owner
-          </label>
-        </div>
-        <div className="md:w-2/3">
-          <input
-            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-orange-500"
-            name="owner"
-            value={owner}
-            onChange={(e) => onChange({ owner: e.target.value })}
-          />
-        </div>
+    <div className="mb-4 overflow-hidden bg-white rounded shadow-md">
+      <div className="flex items-center justify-between px-4 py-2 text-sm bg-orange-200 lg:px-8 lg:py-4">
+        <div className="font-semibold">Add new todo</div>
+        <button
+          onClick={() => setOpen((o) => !o)}
+          className="px-4 py-2 font-bold text-white bg-orange-500 rounded shadow lg:px-8 focus:shadow-outline focus:outline-none"
+        >
+          {open ? (
+            <X size="1rem" className="inline-block" />
+          ) : (
+            <PenTool size="1rem" className="inline-block" />
+          )}
+        </button>
       </div>
-      <div className="md:flex md:items-center mb-6">
-        <div className="md:w-1/3">
-          <label
-            className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-            htmlFor="name"
-          >
-            Name
-          </label>
+      <form className={`${open ? '' : 'hidden'} m-4`} onSubmit={submit}>
+        <div className="mb-6 md:flex md:items-center">
+          <div className="md:w-1/3">
+            <label
+              className="block pr-4 mb-1 font-bold text-gray-500 md:text-right md:mb-0"
+              htmlFor="owner"
+            >
+              Owner
+            </label>
+          </div>
+          <div className="md:w-2/3">
+            <input
+              className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-orange-500"
+              name="owner"
+              value={owner}
+              onChange={(e) => onChange({ owner: e.target.value })}
+            />
+          </div>
         </div>
-        <div className="md:w-2/3">
-          <input
-            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-orange-500"
-            name="name"
-            value={name}
-            onChange={(e) => onChange({ name: e.target.value })}
-          />
+        <div className="mb-6 md:flex md:items-center">
+          <div className="md:w-1/3">
+            <label
+              className="block pr-4 mb-1 font-bold text-gray-500 md:text-right md:mb-0"
+              htmlFor="name"
+            >
+              Name
+            </label>
+          </div>
+          <div className="md:w-2/3">
+            <input
+              className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-orange-500"
+              name="name"
+              value={name}
+              onChange={(e) => onChange({ name: e.target.value })}
+            />
+          </div>
         </div>
-      </div>
-      <div className="md:flex  mb-6">
-        <div className="md:w-1/3">
-          <label
-            className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-            htmlFor="description"
-          >
-            Description
-          </label>
+        <div className="mb-6 md:flex">
+          <div className="md:w-1/3">
+            <label
+              className="block pr-4 mb-1 font-bold text-gray-500 md:text-right md:mb-0"
+              htmlFor="description"
+            >
+              Description
+            </label>
+          </div>
+          <div className="md:w-2/3">
+            <textarea
+              className="w-full h-32 px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none md:h-20 focus:outline-none focus:bg-white focus:border-orange-500"
+              name="description"
+              value={description}
+              onChange={(e) => onChange({ description: e.target.value })}
+            />
+          </div>
         </div>
-        <div className="md:w-2/3">
-          <textarea
-            className="h-32 md:h-20 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-orange-500"
-            name="description"
-            value={description}
-            onChange={(e) => onChange({ description: e.target.value })}
-          />
+        <div className="md:flex md:items-center">
+          <div className="md:w-1/3"></div>
+          <div className="md:w-2/3">
+            <button
+              disabled={disabled}
+              className={`${
+                disabled
+                  ? 'bg-orange-500 opacity-50 cursor-not-allowed'
+                  : 'bg-orange-500 hover:bg-orange-400'
+              } shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded`}
+              type="submit"
+            >
+              Add
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="md:flex md:items-center">
-        <div className="md:w-1/3"></div>
-        <div className="md:w-2/3">
-          <button
-            disabled={disabled}
-            className={`${
-              disabled
-                ? 'bg-orange-500 opacity-50 cursor-not-allowed'
-                : 'bg-orange-500 hover:bg-orange-400'
-            } shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded`}
-            type="submit"
-          >
-            Add
-          </button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   )
 }
 
@@ -206,7 +227,7 @@ function TodoNavigate({ isLoading, hasNext, hasPrev, next, prev }) {
   const disabledPrev = !hasPrev || isLoading
   const disabledNext = !hasNext || isLoading
   return (
-    <div className="bg-white shadow-md rounded px-8 py-6 my-4 flex justify-between text-sm">
+    <div className="flex justify-between px-4 py-2 mb-4 text-sm bg-white rounded shadow-md lg:py-4 lg:px-8">
       <button
         className={`${
           disabledPrev
@@ -216,7 +237,8 @@ function TodoNavigate({ isLoading, hasNext, hasPrev, next, prev }) {
         disabled={disabledPrev}
         onClick={prev}
       >
-        Previous
+        <ChevronsLeft size="1rem" className="inline-block mr-2" />
+        <span>Previous</span>
       </button>
       <button
         className={`${
@@ -227,7 +249,8 @@ function TodoNavigate({ isLoading, hasNext, hasPrev, next, prev }) {
         disabled={disabledNext}
         onClick={next}
       >
-        Next
+        <span>Next</span>
+        <ChevronsRight size="1rem" className="inline-block ml-2" />
       </button>
     </div>
   )
@@ -235,15 +258,15 @@ function TodoNavigate({ isLoading, hasNext, hasPrev, next, prev }) {
 
 function TokenConsole({ limit, nextToken, nextNextToken, previousTokens }) {
   return (
-    <div className="font-mono text-sm shadow-md rounded px-8 py-6 mb-8">
-      <div className="mb-3 py-2 border-b border-gray-400">
+    <div className="px-4 py-2 mb-8 font-mono text-xs rounded shadow-md lg:py-4 md:text-sm lg:px-8">
+      <div className="py-2 mb-3 border-b border-gray-400">
         <div>
           limit: {limit} (number of items to fetch per query; a.k.a page size)
         </div>
       </div>
-      <div className="my-3 py-2 border-b border-gray-400">
+      <div className="py-2 my-3 border-b border-gray-400">
         <div>nextToken (used in the last query):</div>
-        <div className="overflow-x-auto whitespace-no-wrap pt-2 pb-4">
+        <div className="pt-2 pb-4 overflow-x-auto whitespace-no-wrap">
           <ul className="list-disc list-inside">
             <li>
               {nextToken ? (
@@ -255,13 +278,13 @@ function TokenConsole({ limit, nextToken, nextNextToken, previousTokens }) {
           </ul>
         </div>
       </div>
-      <div className="my-3 pt-2 pb-2 border-b border-gray-400">
+      <div className="pt-2 pb-2 my-3 border-b border-gray-400">
         <div>
           Next nextToken (assign to{' '}
           <span className="font-semibold">nextToken</span> when user clicks{' '}
           <span className="font-semibold">Next</span>):
         </div>
-        <div className="overflow-x-auto whitespace-no-wrap pt-2 pb-4">
+        <div className="pt-2 pb-4 overflow-x-auto whitespace-no-wrap">
           <ul className="list-disc list-inside">
             <li>
               {nextNextToken ? (
@@ -273,13 +296,13 @@ function TokenConsole({ limit, nextToken, nextNextToken, previousTokens }) {
           </ul>
         </div>
       </div>
-      <div className="my-3 pt-2 pb-2 border-b border-gray-400">
+      <div className="pt-2 pb-2 my-3 border-b border-gray-400">
         <div>
           Previous Tokens (pop the last token and assign it to{' '}
           <span className="font-semibold">nextToken</span> when user clicks{' '}
           <span className="font-semibold">Previous</span>):
         </div>
-        <div className="overflow-x-auto whitespace-no-wrap pt-2 pb-4">
+        <div className="pt-2 pb-4 overflow-x-auto whitespace-no-wrap">
           <ol className="list-decimal list-inside">
             {previousTokens.map((token, i) => (
               <li key={token || 'undefined'}>
@@ -326,7 +349,7 @@ function HighlightedToken({ previous, current }) {
         )}
       </span>
       <ul className={`list-inside ${showDetails ? '' : 'hidden'}`}>
-        <li className="border-l-8 pl-4">
+        <li className="pl-4 border-l-8">
           <pre>{JSON.stringify(JSON.parse(atob(current)), null, 2)}</pre>
         </li>
       </ul>
@@ -336,17 +359,19 @@ function HighlightedToken({ previous, current }) {
 
 function Error({ isError }) {
   return isError ? (
-    <div className="mt-4 bg-red-400 text-white px-8 py-4">An error occured</div>
+    <div className="px-4 py-4 mt-4 text-white bg-red-400 lg:px-8">
+      An error occured
+    </div>
   ) : null
 }
 
 function Heading() {
   return (
     <div className="mb-6">
-      <h1 className="mx-auto text-center text-4xl tracking-tight leading-10 font-extrabold text-gray-900 sm:text-5xl sm:leading-none md:text-6xl">
+      <h1 className="mx-auto text-4xl font-extrabold leading-10 tracking-tight text-center text-gray-900 sm:text-5xl sm:leading-none md:text-6xl">
         Pagination with AWS AppSync
       </h1>
-      <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl mx-auto md:mt-5 md:text-xl">
+      <p className="mx-auto mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl md:mt-5 md:text-xl">
         Simple todo app that showcases pagination with AppSync and the Amplify{' '}
         <a
           href="https://docs.amplify.aws/cli/graphql-transformer/directives#model"
@@ -455,21 +480,35 @@ function App() {
   }
 
   return (
-    <div className="mx-4 sm:mx-auto my-4 max-w-screen-lg">
+    <div className="max-w-screen-xl mx-auto my-4">
       <Heading />
-      <TodoInput {...{ todo, setTodo, submit }} />
-      <Error isError={isError} />
-      <Table
-        {...{
-          todos,
-          owner,
-          resetOwner,
-          sortDirection,
-          toggleSortDirection,
-        }}
-      />
-      <TodoNavigate {...{ hasNext, hasPrev, prev, next, isLoading }} />
-      <TokenConsole {...{ limit, nextToken, nextNextToken, previousTokens }} />
+      <div className="flex flex-col px-2 lg:flex-row">
+        <div className="lg:w-1/2">
+          <div className="lg:hidden">
+            <TodoInput {...{ todo, setTodo, submit }} />
+            <Error isError={isError} />
+          </div>
+          <TodoNavigate {...{ hasNext, hasPrev, prev, next, isLoading }} />
+          <Table
+            {...{
+              todos,
+              owner,
+              resetOwner,
+              sortDirection,
+              toggleSortDirection,
+            }}
+          />
+        </div>
+        <div className="lg:w-1/2 lg:ml-6">
+          <div className="hidden lg:block">
+            <TodoInput {...{ todo, setTodo, submit }} />
+            <Error isError={isError} />
+          </div>
+          <TokenConsole
+            {...{ limit, nextToken, nextNextToken, previousTokens }}
+          />
+        </div>
+      </div>
     </div>
   )
 }
