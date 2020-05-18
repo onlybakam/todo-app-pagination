@@ -6,7 +6,7 @@ See the dev post for more info: [Implementing pagination with AWS AppSync](.)
 
 🛠 Built with React, GraphQL, AWS Amplify, & AWS AppSync
 
-Check out a read-only version here: https://master.d3k18ga236kzj2.amplifyapp.com/
+Check out a read-only version here: https://pagination.dced4ubmfmz07.amplifyapp.com/
 
 ![app overview](./images/overview.png)
 
