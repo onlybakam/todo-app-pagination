@@ -1,5 +1,8 @@
 {
-    "projectName": "pagination",
+    "providers": [
+        "awscloudformation"
+    ],
+    "projectName": "todo-app-pagination",
     "version": "3.0",
     "frontend": "javascript",
     "javascript": {
@@ -10,8 +13,5 @@
             "BuildCommand": "yarn build",
             "StartCommand": "yarn start"
         }
-    },
-    "providers": [
-        "awscloudformation"
-    ]
+    }
 }

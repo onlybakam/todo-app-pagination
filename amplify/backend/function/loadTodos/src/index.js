@@ -18,8 +18,9 @@ const Chance = require('chance')
 const chance = new Chance()
 
 const names = ['admin', 'axel', 'bernice']
+const counts = [0, 0, 0]
 
-const NUMBER = 5
+const NUMBER = 250
 
 async function query({ queryDef }) {
   const req = new AWS.HttpRequest(apiEndpoint, apiRegion)
@@ -47,11 +48,14 @@ async function query({ queryDef }) {
 exports.handler = async (event) => {
   const exec = []
   for (let i = 0; i < NUMBER; i++) {
+    const index = chance.integer({ min: 0, max: 2 })
+    let count = counts[index]
+    counts[index] = count + 1
     const variables = {
       input: {
-        name: chance.sentence({ words: 5 }),
+        name: `${count} - ${chance.sentence({ words: 5 })}`,
         description: chance.sentence(),
-        owner: names[chance.integer({ min: 0, max: 2 })],
+        owner: names[index],
         dueOn: chance.date({ year: 2020 }).toISOString(),
       },
     }
@@ -64,7 +68,7 @@ exports.handler = async (event) => {
     exec.push((async () => await query({ queryDef }))())
   }
   try {
-    await Promise.all(exec)
+    return await Promise.all(exec)
   } catch (err) {
     console.log(err)
   }

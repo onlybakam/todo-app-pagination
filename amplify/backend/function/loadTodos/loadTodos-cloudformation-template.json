@@ -81,8 +81,8 @@
 				"Runtime": "nodejs12.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-pagination-dev-102635-deployment",
-					"S3Key": "amplify-builds/loadTodos-71515151506b512b746a-build.zip"
+					"S3Bucket": "amplify-pagination-dev-212106-deployment",
+					"S3Key": "amplify-builds/loadTodos-55777970525738475636-build.zip"
 				}
 			}
 		},
